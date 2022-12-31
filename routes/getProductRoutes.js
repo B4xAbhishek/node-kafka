@@ -37,7 +37,7 @@ router.get('/search/:id', async (req, res) => {
 });
 
   
-  //delete
+  //delete one
   router.delete('/d/:id', async (req, res) => {
     const productId = req.params.id;
     Product.deleteOne({ id: productId }, function(err, people) {
@@ -45,5 +45,18 @@ router.get('/search/:id', async (req, res) => {
         res.status(200).json(people)
       });    
   });
+
+  //delete Many
+
+  router.delete('/g', (req, res) => {
+    Product.deleteMany({ _id: { $in: req.body.ids } }, (err) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send('Records deleted successfully!');
+      }
+    });
+  });
+  
 
 module.exports = router
