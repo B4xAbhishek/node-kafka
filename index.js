@@ -6,10 +6,10 @@ const morgan = require('morgan')
 const connectDB = require('./config/db')
 const { UserList } = require('./Fakedata')
 
-
 const app = express()
 const os = require('os')
 // console.log(os.userInfo())
+//db connection 
 connectDB()
 //routes
 const addressRouter = require('./routes/addressRoutes')
@@ -20,13 +20,11 @@ app.use(express.json())
 app.use(morgan('dev'))
 
 //app use 
+app.get("/", (req,res) => {
+  res.send("API Running")
+})
 app.use("/v1", addressRouter);
 app.use("/", getProductRouter);
-
-//File upload
-
-//db connection 
-
 
 //listen to PORT
 const port = process.env.PORT || 5000;
