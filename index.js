@@ -11,15 +11,20 @@ const { UserList } = require('./Fakedata')
 const app = express()
 const os = require('os')
 // console.log(os.userInfo())
+app.use(cors({ origin: '*' }));
 //db connection 
 connectDB()
 //routes
 const addressRouter = require('./routes/addressRoutes')
 const getProductRouter = require('./routes/getProductRoutes')
+const userRouter = require('./routes/userRoutes')
 
 //env's 
 app.use(express.json())
-app.use(morgan('dev'))
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'))
+  } 
 
 //app use 
 app.get("/", (req,res) => {
@@ -27,6 +32,7 @@ app.get("/", (req,res) => {
 })
 app.use("/v1", addressRouter);
 app.use("/", getProductRouter);
+app.use("/login", userRouter);
 
 //listen to PORT
 const port = process.env.PORT || 5000;
