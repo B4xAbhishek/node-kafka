@@ -1,3 +1,22 @@
+import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
+
+@Module({
+  imports: [
+    GraphQLModule.forRoot({
+      typePaths: ['./**/*.graphql'],
+      resolvers: {
+        Path: join(__dirname, './resolvers/*.resolver.ts'),
+      },
+      context: ({ req }) => ({ req }),
+    }),
+  ],
+})
+export class AppModule {}
+
+-----
+
 import { gql } from 'apollo-server-express';
 
 export const launchSchema = gql`
@@ -12,7 +31,7 @@ export const launchSchema = gql`
     launch(id: ID!): Launch
   }
 `;
-
+-------------
 
 const { ApolloServer} = require("apollo-server");
 
