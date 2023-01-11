@@ -1,3 +1,19 @@
+import { gql } from 'apollo-server-express';
+
+export const launchSchema = gql`
+  type Launch {
+    id: ID!
+    name: String
+    year: Int
+  }
+
+  extend type Query {
+    launches: [Launch]
+    launch(id: ID!): Launch
+  }
+`;
+
+
 const { ApolloServer} = require("apollo-server");
 
 const { typeDefs } = require( "./schema/type-defs");
@@ -112,6 +128,8 @@ const Launches = () => {
         </div>
     );
 };
+
+
 
 export default Launches;
 
