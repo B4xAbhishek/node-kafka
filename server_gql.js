@@ -114,3 +114,25 @@ const Launches = () => {
 };
 
 export default Launches;
+
+import { Resolver, Query } from '@nestjs/graphql';
+import { Launch } from './dummy-data';
+
+@Resolver()
+export class LaunchResolver {
+  private launches: Launch[] = [
+    { id: 1, name: 'Falcon 1', year: 2008 },
+    { id: 2, name: 'Falcon 9', year: 2010 },
+  ];
+
+  @Query()
+  launches() {
+    return this.launches;
+  }
+
+  @Query()
+  launch(id: number) {
+    return this.launches.find(launch => launch.id === id);
+  }
+}
+
