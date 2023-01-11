@@ -57,3 +57,60 @@ export default UserProfile;
 server.listen().then(({url}) => {
     console.log("YOUR API IS RUNNING :",url)
     });
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const Launches = () => {
+    const [launches, setLaunches] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const query = `
+                  query {
+                    launches {
+                      mission_name
+                      launch_year
+                      launch_success
+                    }
+                  }
+                `;
+                const { data } = await axios({
+                    method: 'post',
+                    url: 'https://api.spacex.land/graphql',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: {
+                        query
+                    }
+                });
+                setLaunches(data.data.launches);
+            } catch (err) {
+                setError(err);
+            }
+            setLoading(false);
+        };
+        fetchData();
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+  
+    return (
+        <div>
+            {launches.map((launch) => (
+                <div key={launch.mission_name}>
+                    <p>Mission Name: {launch.mission_name}</p>
+                    <p>Launch Year: {launch.launch_year}</p>
+                    <p>Launch Success: {launch.launch_success ? "Yes" : "No"}</p>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+export default Launches;
