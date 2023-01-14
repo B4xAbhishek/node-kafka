@@ -1,7 +1,11 @@
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { ApolloClient } from 'apollo-client';
+import { gql } from 'apollo-boost';
 
-export function user() {
+export const client = new ApolloClient({
+  uri: 'https://your-graphql-endpoint.com/graphql',
+});
+
+export async function user() {
   const query = gql`
     query {
       authuser {
@@ -10,14 +14,9 @@ export function user() {
       }
     }
   `;
-  const { loading, error, data } = useQuery(query);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
-
+  const { data } = await client.query({ query });
   return data.authuser;
 }
-
 
 ---------------------------
 import React from 'react';
