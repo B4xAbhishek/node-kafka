@@ -1,0 +1,52 @@
+import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
+
+function UsersList({ limit }) {
+  const { loading, error, data } = useQuery(query, {
+    variables: { limit },
+    client: client
+  });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error</p>;
+
+  return (
+    <ul>
+      {data.users.map(user => (
+        <li key={user.id}>
+          {user.name}, {user.age}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export default UsersList;
+
+-------------------
+
+import { ApolloClient, gql } from 'apollo-boost';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+
+const cache = new InMemoryCache();
+const client = new ApolloClient({
+  uri: 'https://your-graphql-endpoint.com/graphql',
+  cache
+});
+
+const query = gql`
+  query GetUsers($limit: Int) {
+    users(limit: $limit) {
+      name
+      age
+    }
+  }
+`;
+
+const variables = { limit: 50 };
+
+client
+  .query({ query, variables })
+  .then(data => console.log(data))
+  .catch(error => console.log(error));
