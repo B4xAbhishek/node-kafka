@@ -8,6 +8,7 @@ const morgan = require('morgan')
 const connectDB = require('./config/db')
 const { UserList } = require('./Fakedata')
 
+
 const app = express()
 const os = require('os')
 // console.log(os.userInfo())
@@ -32,7 +33,7 @@ app.get("/", (req,res) => {
 })
 app.use("/v1", addressRouter);
 app.use("/", getProductRouter);
-app.use("/login", userRouter);
+app.use("/", userRouter);
 
 //listen to PORT
 const port = process.env.PORT || 5000;

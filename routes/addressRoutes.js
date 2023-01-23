@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer')
+const sendMail = require('../utils/SendMail')
 
 // Load the model for the data you want to save
 const Item = require('../models/addressModel');
 
 function generateSlug(name) {
-  // code to generate a slug based on the user's name goes here
   return req.body.name
 }
 
@@ -24,8 +24,10 @@ router.post('/post', (req, res) => {
 
   // Save the data to the database
   newItem.save()
-    .then(item => {
+    .then((item) => {
+      // sendMail();
       res.status(201).json(item);
+       
     })
     .catch(err => {
       res.status(500).json({ message: 'Error saving item to database: ' + err });

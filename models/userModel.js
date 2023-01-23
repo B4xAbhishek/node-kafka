@@ -1,35 +1,14 @@
-const mongoose = require('mongoose') 
-const bcrypt = require('bcryptjs') 
+const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
+const userSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    email: { 
+        type: String, 
+        required: true, 
+        unique: true, 
+        match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-  },
-  {
-    timestamps: true,
-  }
-)
+    password: { type: String, required: true }
+});
 
-userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password)
-}
-
-const User = mongoose.model('User', userSchema)
-module.exports = userSchema
+module.exports = mongoose.model('User', userSchema);
