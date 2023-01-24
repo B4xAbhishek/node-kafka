@@ -33,7 +33,7 @@ app.get("/", (req,res) => {
 })
 app.use("/v1", addressRouter);
 app.use("/", getProductRouter);
-app.use("/", userRouter);
+app.use("/user", userRouter);
 
 //listen to PORT
 const port = process.env.PORT || 5000;
