@@ -58,3 +58,26 @@ export default UserProfile;
 server.listen().then(({url}) => {
     console.log("YOUR API IS RUNNING :",url)
     });
+
+//code 
+
+import { queryFetch } from 'path/to/file';
+import { gql } from 'graphql-tag';
+
+describe('queryFetch', () => {
+    it('should fetch data and call callback with data', async () => {
+        const query = gql`
+            query {
+                todos {
+                    title
+                }
+            }
+        `;
+        const variables = {};
+        const callback = jest.fn();
+        const cache = true;
+        await queryFetch(query, variables, callback, cache);
+        expect(callback).toHaveBeenCalledWith(data);
+    });
+});
+
