@@ -7,6 +7,7 @@ const cors = require('cors');
 const morgan = require('morgan')
 const connectDB = require('./config/db')
 const { UserList } = require('./Fakedata')
+const axios = require("axios");
 
 
 const app = express()
@@ -26,6 +27,7 @@ connectDB()
 const addressRouter = require('./routes/addressRoutes')
 const getProductRouter = require('./routes/getProductRoutes')
 const userRouter = require('./routes/userRoutes')
+const oAuthRouter = require('./routes/oAuthRoutes')
 
 //env's 
 app.use(express.json())
@@ -41,6 +43,16 @@ app.get("/", (req,res) => {
 app.use("/v1", addressRouter);
 app.use("/", getProductRouter);
 app.use("/user", userRouter);
+app.use("/", oAuthRouter)
+
+app.get("/stock/:id", async (req,res) => {
+  const SYMBOL = req.params.id
+  const API_KEY='2TDLK6RXWAUW8JS5'
+  console.log(SYMBOL)
+  const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${SYMBOL}&interval=5min&apikey=${API_KEY}`);
+  const result = response.data;
+  res.send(result)
+});
 
 //listen to PORT
 const port = process.env.PORT || 5000;
