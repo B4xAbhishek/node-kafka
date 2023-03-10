@@ -38,12 +38,15 @@ if (process.env.NODE_ENV === 'development') {
 
 //app use 
 app.get("/", (req,res) => {
-  res.send("API Running")
+  res.status(200).json({
+    message: 'API Called '
+});
 })
 app.use("/v1", addressRouter);
 app.use("/", getProductRouter);
 app.use("/user", userRouter);
 app.use("/", oAuthRouter)
+
 
 app.get("/stock/:id", async (req,res) => {
   const SYMBOL = req.params.id
